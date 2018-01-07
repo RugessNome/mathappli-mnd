@@ -83,3 +83,52 @@ Utilisation sous forme de script :
 python splines.py
 ```
 Description : Calcule les splines pour différentes valeur de pas et affiche les graphes correspondants. Le dernier graphe affiché est un graphe de l'erreur en fonction du pas. La fonction étudiée est $f(x) = \arctan(x^3)$.
+
+# Documentation de `splines.py`
+
+Paramètres pour faire tourner le script :
+
+- Définir de la fonction à interpoler (`f1`)
+- Lister avec quels nombre de points d'interpolation les différentes splines vont être crées (`nbList`)
+- Modifier le niveau de définition des courbes (dernier paramètre de la fonction `linspace` l.119)
+
+Remarques :
+
+ - Les erreurs et les graphes sont donnés dans l'ordre où les différents nombres de points sont donnés
+ -  Le vecteur `err` garde en mémoire les erreurs pour chaque essai
+
+
+
+Fonctionnement de la classe Spline:
+
+- Le constructeur de la classe se fait uniquement avec la fonction à interpoler en argument
+- Avant toutes autres étapes de calcul, il faut donner à la spline des points d'interpolations.
+Pour cela, il y a les méthodes `tchebychev` , `equidistant`, `addPoint`, `addPoints`. Toutes ces méthodes font appel à `addPoint` qui est la méthode "de base"
+Le seul moyen de supprimer des points d'interpolation est de recréer la spline.
+- La méthode `interpol` calcul les polynômes sur chacun des intervalles de subdivision.
+Cette méthode fait appel à la méthode `solveMi` qui détermine uniquement les termes Mi à l'aide d'un système matriciel comme écrit dans le rapport
+- La méthode `calcul` retourne la valeur de la spline au point donné en argument
+- La fonction `draw` trace la fonction à interpoler et sa spline naturelle sur les points donnés en argument et retourne l'erreur en norme infinie sur ces points
+
+
+
+Déclaration des attributs:
+
+- `f` : la fonctionà interpoler, déterminée par le constructeur et non modifiable
+- `points` : liste de réels (distincts), peut être rallongées par les méthodes `tchebychev,equidistant`, `addPoint`, `addPoints` mais ne peut-être raccourcie
+- `splines` : liste de polynômes, générée par la méthode `interpol`
+- `n` : nombre de points d'interpolation, mis à jour à chaque appel de `AddPoint`
+
+Déclaration des fonctions:
+
+- Le constructeur prend en argument une fonction et retourne une spline
+- Les méthodes `tchebychev` et `equidistant` prennent en arguments : un nombre de point, le début de l'intervalle,la fin et ne retournent rien
+- La méthode `addPoint` prend en argument un réel
+- La méthode `addPoints` prend en argument une liste de réels
+- La méthode `solveMi` ne prend pas d'argument et retourne la liste des coefficients Mi
+- La méthode `interpol` ne prend pas d'argument et ne retourne rien
+- La méthode `calcul` prend en argument un réel et retourne un autre réel
+- La méthode `draw` rend en argument une liste de points et retourne un réel (positif)
+
+Remarques:
+- Pour les méthodes `calcule` et `draw`, il est préférable que le(s) point(s) donné en argument soi(en)t dans l'intervalle défini par les points de la subdivision sans quoi les résultats n'auront pas de sens.
