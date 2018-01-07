@@ -340,17 +340,17 @@ mesures sont à prendre avec précaution, les algorithmes n'ayant pas
 
 \chapter{Interpolation polynomiale par morceau : splines}
 
-\section{Définition d'une spline }
+\section{Définition d'une spline}
 
 Dans toute cette partie, on notera $f$ une fonction de $\mathbb{R}$ 
 dans $\mathbb{R}$ que l'on souhaite interpoler aux points 
 $x_0, \dots, x_n$ (tous distincts).
 
 On souhaite ici mettre en place un algorithme 
-permettant de calculer une fonction d'interpolation $s$ dite "spline"
+permettant de calculer une fonction d'interpolation $s$ dite "spline".
 
 \begin{definition}[Fonction spline]
-Soit $s$ une fonction de à valeurs dans $\mathbb{R}$ et 
+Soit $s$ une fonction de $[a,b]$ à valeurs dans $\mathbb{R}$ et 
 $x_0, \dots, x_n$ $n+1$ points d'interpolations. $s$ est une spline de degré $n$ si elle respecte
 ces deux propriétés :
 \begin{enumerate}
@@ -377,8 +377,8 @@ s'(x) = \frac{-(x_{i+1} - x)^{2}M_i + (x - x_i)^{2}M_{i+1}}{2h_i} + A_i
 \[
 s(x) = \frac{(x_{i+1} - x)^{3}M_i + (x - x_i)^{3}M_{i+1}}{6h_i} + C_i(x_{i+1}-x) +D_i(x-x_i)
 \]
-avec $A_i = D_i - C_i$, et on note de plus $y_i = f(x_i)$. Ainsi on obtient une expression des inconnues C_i et D_i
-en fonction des M_i à partir de la première propriété de la définition (les valeurs aux points de subdivision).
+avec $A_i = D_i - C_i$, et on note de plus $y_i = f(x_i)$. Ainsi on obtient une expression des inconnues $C_i$ et $D_i$
+en fonction des $M_i$ à partir de la première propriété de la définition (les valeurs aux points de subdivision).
 \[
 C_i = \frac{y_i}{h_i} - \frac{h_iM_i}{6}
 \]
@@ -402,8 +402,8 @@ En développant les $A_{i-1}$ et $A_{i}$ on obtient finalement
 De même, en prenant la continuité au point $x_i$, on obtient pour i allant de 1 à $n-1$.
 Il nous manque alors deux équations pour pouvoir déterminer les $(M_i)_i$,
 ces dernières vont êtres données par les conditions limites aux points $x_0$ et $x_n$.
-Il ne restera plus alors qu'à resoudré un système linéaire que nous pouvons rentrer sous forme d'un système matriciel $AM = B$
-avec M le vecteur colonne des $(M_i)_i$
+Il ne restera plus alors qu'à résoudre un système linéaire que nous pouvons écrire sous forme d'un système matriciel $AM = B$
+avec $M$ le vecteur colonne des $(M_i)_i$
 Au vu des équations, on remarque que le calcul est beaucoup plus simple avec des points équidistants (et donc égalité des $(h_i)_i$)
 
 \section{Cas d'une spline naturelle}
@@ -414,8 +414,11 @@ son accélération au bord de son intervalle de définition est nulle.
 \end{definition}
 
 Dans ce cas, la résolution du système linéaire évoqué précédemment est simple,
-les condition nous donnent $M_0$ et $M_n$ et on obtient la matrice tridiagonale
-A suivante pour calculer Les $M_i$ aux points intérieurs:
+les conditions nous donnent $M_0$ et $M_n$ et on obtient la matrice tridiagonale
+$A$ suivante pour calculer Les $M_i$ aux points intérieurs:
+
+\begingroup
+\footnotesize
 \[
 \begin{bmatrix}
     2/3 & h_1/3(h_0+h_1) & 0 & 0 & \dots  & 0 \\
@@ -426,8 +429,11 @@ A suivante pour calculer Les $M_i$ aux points intérieurs:
     0 & \dots & 0 & 0 & h_{n-1}/3(h_{n-2}+h_{n-1}) & 2/3
 \end{bmatrix}
 \]
-Et la matrice B défini par $b_i =  \frac{2}{h_{i-1}+h_{i}} (\frac{y_{i+1} - y_{i}}{h_{i}} - \frac{y_{i} - y_{i-1}}{h_{i-1}})$.
-On note par ailleurs que si les points sont équidistants, la matrice A est symétrique et de termes constants sur ses trois diagonales.
+\endgroup
+
+\vspace{0.5em}
+Et la matrice $B$ défini par $b_i =  \frac{2}{h_{i-1}+h_{i}} (\frac{y_{i+1} - y_{i}}{h_{i}} - \frac{y_{i} - y_{i-1}}{h_{i-1}})$.
+On note par ailleurs que si les points sont équidistants, la matrice $A$ est symétrique et de termes constants sur ses trois diagonales.
 
 \section{Convergence d'une spline}
 \begin{proposition}[Convergence en norme infinie]
@@ -437,9 +443,9 @@ pour les subdivisions $X_n$ vers $f$.
 Avec $\delta(X_n)$ la distance maximale séparant deux points de la subdivision $X_n$
 \end{proposition}
 
-Nous allons vérifier visualiser cette proposition en prenant pour exemple la fonction $f$ définie par:
+Nous allons vérifier cette proposition en prenant pour exemple la fonction $f$ définie par:
 
-$f(x) = 2(1 + tanh(x)) - x/10$ sur l'intervalle $[-6,+6]$.
+\[ f(x) = 2(1 + tanh(x)) - x/10 \text{ sur l'intervalle } [-6,+6]\text{.} \]
 \begin{figure}[h]
   \centering
   \begin{subfigure}[b]{0.4\linewidth}
@@ -462,16 +468,16 @@ $f(x) = 2(1 + tanh(x)) - x/10$ sur l'intervalle $[-6,+6]$.
   \label{fig:6:fspl}
 \end{figure}
 
-L'avantage de la convergence en norme infinie est qu'elle est très visuelle. Et on voit bien à l'aide de ces figures que la convergence est très rapide \ref{fig:6:fspl}.
+L'avantage de la convergence en norme infinie est qu'elle est très visuelle. Et on voit bien à l'aide de la figure \ref{fig:6:fspl} que la convergence est très rapide.
 Avec 15 points, le résultat est déjà très satisfaisant et donne (visuellement) le même rendu qu'en le faisant avec 90 points.
 La courbe obtenue avec les 9 points d'interpolation nous permet de comprendre les limites de la méthode (pour un nombre faible de points en tout cas).
 On voit que sur l'intervalle $[-2,+2]$, la spline approche moins bien la fonction que sur le reste; en dehors des points de subdivision facilement repérables car
 points sécants des coubes.
 
-Si on se repenche sur les calculs de la section précédente, on constate que le vecteur B correspond à une approximation de la dérivée seconde aux
-points de subdivision. La matrice A est dans notre cas symétrique et le terme dominant sur chaque ligne est celui de la diagonale principale. On a donc
+Si on se repenche sur les calculs de la section précédente, on constate que le vecteur $B$ correspond à une approximation de la dérivée seconde aux
+points de subdivision. La matrice $A$ est dans notre cas symétrique et le terme dominant sur chaque ligne est celui de la diagonale principale. On a donc
 une grande corrélation entre la dérivée seconde de la fonction $f$ et les termes $M_i$. Ainsi en prenant la dérivée troisième de notre spline constant égale à
-$\frac{M_{i+1} - M_i}{h_i}$, ce qui nous donne grossièrement une approximation de la dérivée troisième de $f$. Ainsi si la dérivée troisième de $f$ varie,
+$\frac{M_{i+1} - M_i}{h_i}$, ce qui nous donne grossièrement une approximation de la dérivée troisième de $f$. Ainsi, si la dérivée troisième de $f$ varie,
 la non-continuité de la dérivée troisième de notre fonction spline sera de plus en plus importante alors que la fonction que nous souhaitons interpoler est ici
 infiniment dérivable (et de dérivées continues) sur tout l'intervalle. Les constantes apportées par continuité des premières dérivées ($C_i$ et $D_i$) qui
 n'interviennent pas dans la dérivée troisième vont assurer les raccordements aux points de subdivision mais celà entraîne des mauvaises approximations
@@ -489,7 +495,7 @@ de la dérivée première en ces points.
 
 Pour vérifier le bon fonctionnement de la méthode et de l'algorithme, on peut tester avec une fonction de dérivée troisième nulle,
 c'est-à-dire une fontion polynomiale de degré 2. Avec des points équidistants, le calcul littéral nous donne pour tout $i$ allant de
-1 à $n-1$, $b_i = 2$ puis $M_i = 2a$. avec a le coefficient de degré 2 de la fonction $f$. On obtient alors $s''(x) = 2a$ donc $s$ et $f$
+1 à $n-1$, $b_i = 2$ puis $M_i = 2a$. avec $a$ le coefficient de degré 2 de la fonction $f$. On obtient alors $s''(x) = 2a$ donc $s$ et $f$
 ont des dérivées secondes égales et les valeurs aux points $x_i$ et $x_{i+1}$ nous assurent que $s$ et $f$ sont égales.
 
 \begin{figure}[h]
@@ -499,7 +505,7 @@ ont des dérivées secondes égales et les valeurs aux points $x_i$ et $x_{i+1}$
   \label{fig:7:noerr}
 \end{figure}
 
-On constate néanmoins que la spline déterminées par l'algorithme n'est pas strictement égale à la fonction $f$ \ref{fig:7:noerr}. Néanmoins, si on compare avec l'interpolation obtenue avec le même nombre de points, le résultat est bien meilleur. La légère erreure est peut être supputable à des approximations de calculs en base binaire ou à la méthode de résolution du système linéaire.
+On constate néanmoins que la spline déterminées par l'algorithme n'est pas strictement égale à la fonction $f$ (figure \ref{fig:7:noerr}). Néanmoins, si on compare avec l'interpolation obtenue avec le même nombre de points, le résultat est bien meilleur. La légère erreure est peut être supputable à des approximations de calculs en base binaire ou à la méthode de résolution du système linéaire.
 
 A l'inverse, on peut tester avec une autre fonction plus semblable au premier exemple où les dérivées sont importantes $f(x) = arctan(x^3)$
 \begin{figure}[h]
@@ -522,7 +528,7 @@ il y a deux possibbilités :
 \item Augmenter le nombre de points dans la subdivision
 \item Augmenter le degré de la spline
 \end{enumerate}
-BIen évidemment, la première solution ralonge le temps de calcul, notamment pour le système matriciel de taille $(n-1)^2$ et nous assure la convergence
+Bien évidemment, la première solution ralonge le temps de calcul, notamment pour le système matriciel de taille $(n-1)^2$ et nous assure la convergence
 uniforme. Pour la deuxième solution, de même qu'une spline cubique est limitée pour les fonctions à dérivée troisème importante, augmenter le degré
 est utile qu'on finira par tomber sur une dérivée à faibles valeurs, d'autant plus qu'augmenter le nombre de degré sans augmenter le nombre de points
 diminue l'exactitude des termes dérivés approximés dans la matrice $B$. Et augmenter le degré de la matrice va alourdir la matrice (mais pas en taille
