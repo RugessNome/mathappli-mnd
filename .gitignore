@@ -1,0 +1,5 @@
+rapport/*.aux
+rapport/*.idx
+rapport/*.log
+rapport/*.out
+rapport/main.pdf
